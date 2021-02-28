@@ -1,14 +1,15 @@
 import { Suspense, lazy } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { useAuth } from 'hooks';
 import { Switch, Route } from 'react-router-dom';
-import './styles.scss';
+import './Main.scss';
 
 const Home = lazy(() => import('../Home'));
+const Categories = lazy(() => import('../Categories'));
 
 const blockName = 'main-wrapper';
 
-const BASE_PATH = '/app';
+export const BASE_PATH = '/app';
 
 const Main = () => {
   const auth = useAuth();
@@ -19,13 +20,16 @@ const Main = () => {
 
   return (
     <div className={blockName}>
-      <Suspense fallback={<p>Loading</p>}>
+      <h1>
+        <Link to="/app">Bardu admin</Link>
+      </h1>
+      <Suspense fallback={<p>Cargando</p>}>
         <Switch>
           <Route exact path={BASE_PATH} component={Home} />
           <Route
             exact
             path={`${BASE_PATH}/categorias`}
-            component={() => <p>Categorias</p>}
+            component={Categories}
           />
         </Switch>
       </Suspense>

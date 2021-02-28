@@ -1,0 +1,35 @@
+.drawer-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.6);
+
+  &__content {
+    color: black;
+    box-sizing: border-box;
+    width: 500px;
+    height: 100vh;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    padding: 16px;
+
+    h4 {
+      font-size: 20px;
+    }
+  }
+
+  &__body {
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+  }
+
+  &__close-icon {
+    font-size: 25px;
+    cursor: pointer;
+    float: right;
+  }
+}

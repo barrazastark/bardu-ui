@@ -4,7 +4,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import { AuthProvider } from 'Components';
+import { AuthProvider } from 'components';
 import { Login, Main } from 'Views';
 
 function App() {

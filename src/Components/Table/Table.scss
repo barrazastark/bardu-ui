@@ -1,0 +1,54 @@
+.table-wrapper {
+  width: 100%;
+  border: 1px solid white;
+  border-radius: 6px;
+  max-height: 700px;
+  overflow-y: auto;
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    position: relative;
+  }
+
+  thead {
+    text-align: left;
+  }
+
+  th {
+    padding: 16px 0 16px 8px;
+
+    color: gold;
+    position: sticky;
+    top: 0;
+    background-color: #1b2932;
+  }
+
+  &__action-cell-header {
+    width: 100px;
+  }
+
+  button {
+    padding: 8px;
+    margin-right: 5px;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid transparent;
+    border-radius: 6px;
+
+    svg {
+      font-size: 20px;
+      color: #495057;
+    }
+  }
+
+  tbody {
+    text-align: left;
+    tr:hover {
+      background-color: #1b2932;
+    }
+    td {
+      padding: 16px 0 16px 8px;
+    }
+  }
+}
