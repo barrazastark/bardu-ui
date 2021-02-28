@@ -1,0 +1,39 @@
+.login-wrapper {
+  background-color: #26333d;
+  padding: 40px;
+  height: 100vh;
+  box-sizing: border-box;
+
+  &__login-box {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    margin-top: 90px;
+
+    input {
+      margin-bottom: 15px;
+      padding: 10px 16px;
+      border: 1px solid #6edaa1;
+      background-color: #26333d;
+      outline: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 18px;
+    }
+    input::placeholder {
+      color: #62696f;
+    }
+
+    button {
+      padding: 10px 16px;
+      cursor: pointer;
+      background-color: #6edaa1;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      outline: none;
+      color: #26333d;
+      font-size: 18px;
+    }
+  }
+}
