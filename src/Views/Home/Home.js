@@ -6,6 +6,7 @@ import {
   faWarehouse,
   faMoneyCheckAlt,
   faShoppingCart,
+  faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { BASE_PATH } from 'Views/Main/Main';
 import './Home.scss';
@@ -17,6 +18,7 @@ const CategoryIcon = () => <FontAwesomeIcon icon={faThList} />;
 const InventoryIcon = () => <FontAwesomeIcon icon={faWarehouse} />;
 const SaleIcon = () => <FontAwesomeIcon icon={faMoneyCheckAlt} />;
 const PurchaseIcon = () => <FontAwesomeIcon icon={faShoppingCart} />;
+const SignOutIcon = () => <FontAwesomeIcon icon={faSignOutAlt} />;
 
 const Home = () => {
   return (

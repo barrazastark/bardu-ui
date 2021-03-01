@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { Icon } from 'components';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -9,9 +9,27 @@ const blockName = 'table-wrapper';
 const EditIcon = () => <Icon icon={faEdit} />;
 const RemoveIcon = () => <Icon icon={faTrash} />;
 
-const Table = ({ data, headers, withAction, isEditable, isRemove }) => {
-  const handleRemoveItem = (item) => {};
-  const handleEditItem = (item) => {};
+const Table = ({
+  data,
+  headers,
+  withAction,
+  isEditable,
+  isRemove,
+  onEdit,
+  onRemove,
+}) => {
+  const handleRemoveItem = useCallback(
+    (item) => {
+      onRemove(item);
+    },
+    [onRemove],
+  );
+  const handleEditItem = useCallback(
+    (item) => {
+      onEdit(item);
+    },
+    [onEdit],
+  );
 
   const renderHeaders = useMemo(() => {
     return headers.map((header) => <th key={header.key}>{header.display}</th>);
@@ -27,12 +45,12 @@ const Table = ({ data, headers, withAction, isEditable, isRemove }) => {
               {withAction && index + 1 === headers.length && (
                 <td className={`${blockName}__action-cell-item`}>
                   {isEditable && (
-                    <button onClick={() => handleEditItem(_data[header.key])}>
+                    <button onClick={() => handleEditItem(_data)}>
                       <EditIcon />
                     </button>
                   )}
                   {isRemove && (
-                    <button onClick={() => handleRemoveItem(_data[header.key])}>
+                    <button onClick={() => handleRemoveItem(_data)}>
                       <RemoveIcon />
                     </button>
                   )}
@@ -43,7 +61,15 @@ const Table = ({ data, headers, withAction, isEditable, isRemove }) => {
         </tr>
       );
     });
-  }, [data, headers, isEditable, isRemove, withAction]);
+  }, [
+    data,
+    headers,
+    isEditable,
+    isRemove,
+    withAction,
+    handleRemoveItem,
+    handleEditItem,
+  ]);
 
   return (
     <div className={blockName}>

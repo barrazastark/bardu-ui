@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Table, Button } from 'components';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import './Categories.scss';
-import { Drawer } from 'components';
+import { Drawer, Modal } from 'components';
+import Form from './Form';
 import data from './data';
 
 const blockName = 'categories-wrapper';
@@ -15,35 +16,89 @@ const headers = [
 ];
 
 const Categories = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [state, setState] = useState({
+    isEdit: false,
+    name: '',
+    drawerOpen: false,
+    itemToRemove: null,
+  });
 
-  const handleCancel = () => {
-    setDrawerOpen(false);
+  const { isEdit, name, drawerOpen, itemToRemove } = state;
+
+  const handleFormChange = (e) => {
+    setState((prevState) => ({ ...prevState, name: e.target.value }));
   };
 
-  const handleAccept = () => {};
+  const handleCancel = () => {
+    setState((prevState) => ({ ...prevState, drawerOpen: false, name: '' }));
+  };
+
+  const handleRemove = (item) => {
+    setState((prevState) => ({ ...prevState, itemToRemove: item.name }));
+  };
+
+  const handleEdit = (item) => {
+    setState((prevState) => ({
+      ...prevState,
+      name: item.name,
+      drawerOpen: true,
+      isEdit: true,
+    }));
+  };
+
+  const handleAcceptDrawer = () => {};
+
+  const handleCancelModal = () => {
+    setState((prevState) => ({ ...prevState, itemToRemove: null }));
+  };
+
+  const handleAcceptModal = () => {
+    setState((prevState) => ({ ...prevState, itemToRemove: null }));
+  };
 
   return (
     <div className={blockName}>
       <h3>
         Categorias ({data.length}){' '}
         <Button
-          onClick={() => setDrawerOpen(true)}
+          onClick={() =>
+            setState((prevState) => ({
+              ...prevState,
+              drawerOpen: true,
+              isEdit: false,
+            }))
+          }
           icon={faPlusCircle}
           type="primary"
         >
           Agregar categoria
         </Button>
       </h3>
-      <Table data={data} headers={headers} />
+      <Table
+        data={data}
+        headers={headers}
+        onRemove={handleRemove}
+        onEdit={handleEdit}
+      />
       <Drawer
         isVisible={drawerOpen}
-        title="Agregar categoria"
+        title={`${isEdit ? 'Editar' : 'Agregar'} categoria`}
         onCancel={handleCancel}
-        onAccept={handleAccept}
+        onAccept={handleAcceptDrawer}
+        isButtonDisabled={!Boolean(name)}
       >
-        <p>Body</p>
+        <Form data={name} onChange={handleFormChange} />
       </Drawer>
+      <Modal
+        isVisible={Boolean(itemToRemove)}
+        onCancel={handleCancelModal}
+        onAccept={handleAcceptModal}
+      >
+        <p>
+          Estas seguto de borrar el siguiente item ?{' '}
+          <span className={`${blockName}__bold-text`}>{itemToRemove}</span>
+        </p>
+      </Modal>
     </div>
   );
 };

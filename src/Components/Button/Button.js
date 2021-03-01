@@ -3,10 +3,13 @@ import './Button.scss';
 
 const blockName = 'button-wrapper';
 
-const Button = ({ icon, children, type, onClick, className }) => {
+const Button = ({ icon, children, type, onClick, className, disabled }) => {
+  const _disabled = disabled ? 'disabled' : '';
+
   return (
     <button
-      className={`${blockName} ${blockName}__${type} ${className}`}
+      disabled={disabled}
+      className={`${blockName} ${blockName}__${type} ${className} ${_disabled}`}
       onClick={onClick}
     >
       {Boolean(icon) && <Icon icon={icon} />}
@@ -17,6 +20,12 @@ const Button = ({ icon, children, type, onClick, className }) => {
       )}
     </button>
   );
+};
+
+Button.defaultProps = {
+  disabled: false,
+  className: '',
+  type: 'default',
 };
 
 export default Button;

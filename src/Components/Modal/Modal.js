@@ -1,21 +1,11 @@
-import { Icon, Button } from 'components';
+import './Modal.scss';
 import { faTimes as Ico } from '@fortawesome/free-solid-svg-icons';
+import { Icon, Button } from 'components';
 
-import './Drawer.scss';
+const blockName = 'modal-wrapper';
 
-const blockName = 'drawer-wrapper';
-
-const Drawer = ({
-  isVisible,
-  title,
-  onCancel,
-  onAccept,
-  children,
-  isButtonDisabled,
-}) => {
-  if (!isVisible) {
-    return null;
-  }
+const Modal = ({ isVisible, children, onCancel, onAccept }) => {
+  if (!isVisible) return null;
 
   return (
     <div className={blockName}>
@@ -25,17 +15,17 @@ const Drawer = ({
           icon={Ico}
           onClick={onCancel}
         />
-        <h4>{title}</h4>
         <div className={`${blockName}__body`}>{children}</div>
+
         <div className={`${blockName}__actions`}>
-          <Button type="primary" onClick={onAccept} disabled={isButtonDisabled}>
+          <Button onClick={onCancel}>Cancelar</Button>
+          <Button type="primary" onClick={onAccept}>
             Aceptar
           </Button>
-          <Button onClick={onCancel}>Cancelar</Button>
         </div>
       </div>
     </div>
   );
 };
 
-export default Drawer;
+export default Modal;
