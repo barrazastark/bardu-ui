@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Table, Button } from 'components';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import './Categories.scss';
 import { Drawer, Modal } from 'components';
 import Form from './Form';
-import data from './data';
+import client from 'services/client';
 
 const blockName = 'categories-wrapper';
 
@@ -21,9 +21,16 @@ const Categories = () => {
     name: '',
     drawerOpen: false,
     itemToRemove: null,
+    data: [],
   });
 
-  const { isEdit, name, drawerOpen, itemToRemove } = state;
+  useEffect(() => {
+    client.get('/categories').then((r) => {
+      setState((prevState) => ({ ...prevState, data: r.data }));
+    });
+  }, []);
+
+  const { isEdit, name, drawerOpen, itemToRemove, data } = state;
 
   const handleFormChange = (e) => {
     setState((prevState) => ({ ...prevState, name: e.target.value }));

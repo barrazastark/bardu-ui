@@ -38,7 +38,7 @@ const Table = ({
   const renderBody = useMemo(() => {
     return data.map((_data) => {
       return (
-        <tr key={_data.id}>
+        <tr key={_data._id}>
           {headers.map((header, index) => (
             <>
               <td key={_data[header.key]}>{_data[header.key]}</td>
