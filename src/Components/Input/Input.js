@@ -2,10 +2,10 @@ import './Input.scss';
 
 const blockName = 'input-wrapper';
 
-const Input = ({ label, value, onChange, placeholder, name }) => {
+const Input = ({ label, value, onChange, placeholder, name, className }) => {
   return (
-    <div className={blockName}>
-      <label>{label}</label>
+    <div className={`${blockName} ${className}`}>
+      {label && <label>{label}</label>}
       <input
         name={name}
         type="text"

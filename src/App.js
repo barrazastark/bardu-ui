@@ -4,12 +4,15 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import { AuthProvider } from 'components';
+import { useSelector } from 'react-redux';
+import { AuthProvider, Alert } from 'components';
 import { Login, Main } from 'Views';
 
 function App() {
+  const message = useSelector((state) => state.message.message);
   return (
     <AuthProvider>
+      <Alert message={message.text} type={message.type} />
       <Router>
         <Switch>
           <Route path="/" exact component={() => <Redirect to="/app" />} />

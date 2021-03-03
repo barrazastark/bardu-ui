@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { useAuth } from 'hooks';
+import store from '../redux/store';
+import { setMessage } from '../redux/actions';
 
 const client = axios.create({
   baseURL: 'http://localhost:5000/api',
@@ -15,10 +16,18 @@ client.interceptors.response.use(
     return config;
   },
   (error) => {
-    const Helper = () => {
-      useAuth().reportError(error.response.data.message);
-    };
-    Helper();
+    const isLoginPage = window.location.pathname.includes('login');
+    const isGettingSession =
+      error.response.config.method === 'get' &&
+      error.response.config.url === '/users/auth';
+
+    if ((isLoginPage && !isGettingSession) || !isLoginPage) {
+      store.dispatch(setMessage(error?.response?.data?.message, 'danger'));
+
+      setTimeout(() => {
+        store.dispatch(setMessage('', 'success'));
+      }, 5000);
+    }
     return Promise.reject(error);
   },
 );

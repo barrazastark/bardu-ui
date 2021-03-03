@@ -13,6 +13,13 @@
       margin-left: 10px;
     }
   }
+  h3 .categories-wrapper__search {
+    display: inline;
+    margin: 0 20px;
+    input {
+      padding: 8px;
+    }
+  }
   &__bold-text {
     font-weight: bold;
   }

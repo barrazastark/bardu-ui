@@ -32,18 +32,28 @@ const Table = ({
   );
 
   const renderHeaders = useMemo(() => {
-    return headers.map((header) => <th key={header.key}>{header.display}</th>);
+    return headers.map((header) => (
+      <th id={header.key} key={header.key}>
+        {header.display}
+      </th>
+    ));
   }, [headers]);
 
   const renderBody = useMemo(() => {
-    return data.map((_data) => {
+    return data.map((_data, i) => {
       return (
         <tr key={_data._id}>
+          <td>{i + 1}</td>
           {headers.map((header, index) => (
             <>
-              <td key={_data[header.key]}>{_data[header.key]}</td>
+              <td key={`${_data._id}-${_data[header.key]}`}>
+                {_data[header.key]}
+              </td>
               {withAction && index + 1 === headers.length && (
-                <td className={`${blockName}__action-cell-item`}>
+                <td
+                  key={`${_data._id}-actions`}
+                  className={`${blockName}__action-cell-item`}
+                >
                   {isEditable && (
                     <button onClick={() => handleEditItem(_data)}>
                       <EditIcon />
@@ -71,11 +81,16 @@ const Table = ({
     handleEditItem,
   ]);
 
+  if (data.length === 0) {
+    return <h4>No hay registros</h4>;
+  }
+
   return (
     <div className={blockName}>
       <table>
         <thead>
           <tr>
+            <th className={`${blockName}__index-header`}>#</th>
             {renderHeaders}
             {withAction && (
               <th className={`${blockName}__action-cell-header`} />

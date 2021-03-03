@@ -1,13 +1,18 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useAuth } from 'hooks';
-import './styles.scss';
+import './Login.scss';
 
 const blockName = 'login-wrapper';
 
 const Login = (props) => {
+  const emailRef = useRef(null);
   const auth = useAuth();
   const [state, setState] = useState({ email: '', password: '' });
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
 
   const handleChange = (e) => {
     setState((prevState) => ({
@@ -22,6 +27,15 @@ const Login = (props) => {
     });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && state.password && state.email) {
+      handleClick();
+    }
+  };
+
+  const buttonDisabled =
+    !Boolean(state.email && state.password) || auth.loadingLogin;
+
   if (auth.user) {
     return <Redirect to="/app" />;
   }
@@ -30,6 +44,7 @@ const Login = (props) => {
     <div className={blockName}>
       <div className={`${blockName}__login-box`}>
         <input
+          ref={emailRef}
           type="text"
           placeholder="Correo electrónico"
           name="email"
@@ -42,8 +57,15 @@ const Login = (props) => {
           name="password"
           value={state.password}
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
         />
-        <button onClick={handleClick}>Conectarse</button>
+        <button
+          disabled={buttonDisabled}
+          onClick={handleClick}
+          className={`${buttonDisabled ? 'disabled' : ''}`}
+        >
+          Conectarse
+        </button>
       </div>
     </div>
   );

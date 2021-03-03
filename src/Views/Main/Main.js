@@ -2,8 +2,8 @@ import { Suspense, lazy } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { useAuth } from 'hooks';
 import { Switch, Route } from 'react-router-dom';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { Button } from 'components';
+import { faSignOutAlt, faHome } from '@fortawesome/free-solid-svg-icons';
+import { Button, Icon } from 'components';
 import './Main.scss';
 
 const Home = lazy(() => import('../Home'));
@@ -15,8 +15,6 @@ export const BASE_PATH = '/app';
 
 const Main = () => {
   const auth = useAuth();
-
-  console.log(auth);
 
   const handleSignOut = () => {
     auth.signout();
@@ -33,7 +31,10 @@ const Main = () => {
   return (
     <div className={blockName}>
       <h1>
-        <Link to="/app">Bardu admin</Link>
+        <Link to="/app">
+          <Icon icon={faHome} />
+          Bardu admin
+        </Link>
         <Button
           className={`${blockName}__signout`}
           icon={faSignOutAlt}
@@ -54,4 +55,5 @@ const Main = () => {
     </div>
   );
 };
+
 export default Main;

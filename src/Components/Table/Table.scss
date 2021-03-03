@@ -2,7 +2,7 @@
   width: 100%;
   border: 1px solid white;
   border-radius: 6px;
-  max-height: 700px;
+  max-height: 750px;
   overflow-y: auto;
 
   table {
@@ -28,6 +28,9 @@
     width: 100px;
   }
 
+  &__index-header {
+    width: 40px;
+  }
   button {
     padding: 8px;
     margin-right: 5px;
