@@ -1,5 +1,4 @@
 .menu-card-wrapper {
-  border: 1px solid transparent;
   border-radius: 6px;
   background-color: white;
   padding: 32px;
@@ -8,6 +7,8 @@
   align-items: center;
   text-decoration: none;
   width: 200px;
+  border: 1px solid #e3e3e3;
+  border-radius: 0.25rem;
 
   svg {
     font-size: 40px;

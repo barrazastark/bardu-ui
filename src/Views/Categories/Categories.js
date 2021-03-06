@@ -1,10 +1,16 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Table, Button } from 'components';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import './Categories.scss';
 import { Drawer, Modal, Input } from 'components';
 import Form from './Form';
-import client from 'services/client';
+
+import {
+  addCategory,
+  editCategory,
+  deleteCategory,
+} from '../../redux/categories/actions';
 
 const blockName = 'categories-wrapper';
 
@@ -26,11 +32,12 @@ const initialState = {
   drawerOpen: false,
   itemToRemove: null,
   itemToEdit: null,
-  data: [],
   search: '',
 };
 
 const Categories = () => {
+  const categories = useSelector((state) => state.categories.categories);
+  const dispatch = useDispatch();
   const [state, setState] = useState(initialState);
   const {
     isEdit,
@@ -39,15 +46,8 @@ const Categories = () => {
     drawerOpen,
     itemToRemove,
     itemToEdit,
-    data,
     search,
   } = state;
-
-  useEffect(() => {
-    client.get('/categories').then((r) => {
-      setState((prevState) => ({ ...prevState, data: r.data }));
-    });
-  }, []);
 
   const handleFormChange = (e) => {
     setState((prevState) => ({
@@ -82,35 +82,34 @@ const Categories = () => {
 
   const handleAcceptDrawer = async () => {
     if (!isEdit) {
-      const response = await client.post('/categories', { name, description });
-      setState((prevState) => ({
-        ...prevState,
-        drawerOpen: false,
-        name: '',
-        description: '',
-        data: [...prevState.data, response.data],
-      }));
+      dispatch(
+        addCategory({ name, description }, () => {
+          setState((prevState) => ({
+            ...prevState,
+            drawerOpen: false,
+            name: '',
+            description: '',
+          }));
+        }),
+      );
     } else {
-      await client.put(`/categories/${itemToEdit._id}`, {
-        name,
-        description,
-      });
-
-      const newData = state.data.map((category) => {
-        if (category._id === itemToEdit._id) {
-          category.name = name;
-          category.description = description;
-        }
-        return category;
-      });
-
-      setState((prevState) => ({
-        ...prevState,
-        drawerOpen: false,
-        name: '',
-        description: '',
-        data: newData,
-      }));
+      dispatch(
+        editCategory(
+          itemToEdit._id,
+          {
+            name,
+            description,
+          },
+          () => {
+            setState((prevState) => ({
+              ...prevState,
+              drawerOpen: false,
+              name: '',
+              description: '',
+            }));
+          },
+        ),
+      );
     }
   };
 
@@ -119,15 +118,14 @@ const Categories = () => {
   };
 
   const handleAcceptModal = async () => {
-    await client.delete(`/categories/${itemToRemove._id}`);
-    const newData = data.filter(
-      (category) => category._id !== itemToRemove._id,
+    dispatch(
+      deleteCategory(itemToRemove._id, () => {
+        setState((prevState) => ({
+          ...prevState,
+          itemToRemove: null,
+        }));
+      }),
     );
-    setState((prevState) => ({
-      ...prevState,
-      itemToRemove: null,
-      data: newData,
-    }));
   };
 
   const handleSearch = (e) => {
@@ -137,18 +135,18 @@ const Categories = () => {
   const filteredData = useMemo(() => {
     const crit = search.toUpperCase();
 
-    return data.filter((d) => {
+    return categories.filter((d) => {
       return (
         d.name.toUpperCase().includes(crit) ||
         d.description.toUpperCase().includes(crit)
       );
     });
-  }, [search, data]);
+  }, [search, categories]);
 
   return (
     <div className={blockName}>
       <h3>
-        Categorias ({data.length}){' '}
+        Categorias ({categories.length}){' '}
         <Input
           type="text"
           placeholder="Buscar"

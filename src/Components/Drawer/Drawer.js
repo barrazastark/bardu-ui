@@ -1,4 +1,4 @@
-import { Icon, Button } from 'components';
+import { Icon, Button, Loader } from 'components';
 import { faTimes as Ico } from '@fortawesome/free-solid-svg-icons';
 
 import './Drawer.scss';
@@ -12,6 +12,8 @@ const Drawer = ({
   onAccept,
   children,
   isButtonDisabled,
+  isLoading,
+  messageLoader,
 }) => {
   if (!isVisible) {
     return null;
@@ -20,6 +22,12 @@ const Drawer = ({
   return (
     <div className={blockName}>
       <div className={`${blockName}__content`}>
+        {isLoading && (
+          <div className={`${blockName}__loading-wrapper`}>
+            <Loader message={messageLoader} />
+          </div>
+        )}
+
         <Icon
           className={`${blockName}__close-icon`}
           icon={Ico}

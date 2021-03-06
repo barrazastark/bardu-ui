@@ -1,0 +1,48 @@
+.image-selector-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+
+  span {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  label {
+    display: flex;
+    color: #495057;
+    border: 1px solid #495057;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    width: fit-content;
+    padding: 8px 16px;
+
+    svg {
+      font-size: 18px;
+      margin-left: 5px;
+    }
+  }
+  input {
+    visibility: hidden;
+  }
+
+  &__no-image {
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  img {
+    box-sizing: border-box;
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+  }
+}

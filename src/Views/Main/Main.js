@@ -1,20 +1,31 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import { useAuth } from 'hooks';
 import { Switch, Route } from 'react-router-dom';
 import { faSignOutAlt, faHome } from '@fortawesome/free-solid-svg-icons';
 import { Button, Icon } from 'components';
+import { getCategories } from '../../redux/categories/actions';
+import { getProducts } from '../../redux/products/actions';
+
 import './Main.scss';
 
 const Home = lazy(() => import('../Home'));
 const Categories = lazy(() => import('../Categories'));
+const Products = lazy(() => import('../Products'));
 
 const blockName = 'main-wrapper';
 
 export const BASE_PATH = '/app';
 
 const Main = () => {
+  const dispatch = useDispatch();
   const auth = useAuth();
+
+  useEffect(() => {
+    dispatch(getProducts());
+    dispatch(getCategories());
+  }, [dispatch]);
 
   const handleSignOut = () => {
     auth.signout();
@@ -33,7 +44,7 @@ const Main = () => {
       <h1>
         <Link to="/app">
           <Icon icon={faHome} />
-          Bardu admin
+          Bienvendio Edwin
         </Link>
         <Button
           className={`${blockName}__signout`}
@@ -45,11 +56,8 @@ const Main = () => {
       <Suspense fallback={<p>Cargando</p>}>
         <Switch>
           <Route exact path={BASE_PATH} component={Home} />
-          <Route
-            exact
-            path={`${BASE_PATH}/categorias`}
-            component={Categories}
-          />
+          <Route path={`${BASE_PATH}/categorias`} component={Categories} />
+          <Route path={`${BASE_PATH}/productos`} component={Products} />
         </Switch>
       </Suspense>
     </div>

@@ -1,9 +1,10 @@
 .table-wrapper {
   width: 100%;
-  border: 1px solid white;
+  border: 1px solid rgba(224, 224, 224, 1);
   border-radius: 6px;
   max-height: 750px;
   overflow-y: auto;
+  background-color: white;
 
   table {
     border-collapse: collapse;
@@ -17,11 +18,12 @@
 
   th {
     padding: 16px 0 16px 8px;
-
-    color: gold;
     position: sticky;
     top: 0;
-    background-color: #1b2932;
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
+    line-height: 1.5rem;
+    border-bottom: 1px solid rgba(224, 224, 224, 1);
   }
 
   &__action-cell-header {
@@ -48,10 +50,11 @@
   tbody {
     text-align: left;
     tr:hover {
-      background-color: #1b2932;
+      background-color: rgba(0, 0, 0, 0.04);
     }
     td {
       padding: 16px 0 16px 8px;
+      border-bottom: 1px solid rgba(224, 224, 224, 1);
     }
   }
 }

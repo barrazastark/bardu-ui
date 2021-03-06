@@ -11,12 +11,12 @@ const reducer = (state = intialState, action) => {
   switch (type) {
     case 'SET_MESSAGE':
       return {
+        ...state,
         message: {
           text: payload.message,
           type: payload.type,
         },
       };
-
     default:
       return state;
   }

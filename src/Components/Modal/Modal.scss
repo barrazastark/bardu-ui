@@ -30,5 +30,9 @@
   &__actions {
     display: flex;
     flex-direction: row-reverse;
+
+    button:last-child {
+      margin-right: 10px;
+    }
   }
 }
