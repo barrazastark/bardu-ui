@@ -13,6 +13,7 @@ import './Main.scss';
 const Home = lazy(() => import('../Home'));
 const Categories = lazy(() => import('../Categories'));
 const Products = lazy(() => import('../Products'));
+const Purchases = lazy(() => import('../Purchases'));
 
 const blockName = 'main-wrapper';
 
@@ -56,6 +57,7 @@ const Main = () => {
       <Suspense fallback={<p>Cargando</p>}>
         <Switch>
           <Route exact path={BASE_PATH} component={Home} />
+          <Route path={`${BASE_PATH}/compras`} component={Purchases} />
           <Route path={`${BASE_PATH}/categorias`} component={Categories} />
           <Route path={`${BASE_PATH}/productos`} component={Products} />
         </Switch>

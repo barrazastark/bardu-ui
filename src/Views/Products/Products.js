@@ -71,14 +71,12 @@ const Products = () => {
       name,
       description,
       category,
-      quantity,
       pricePublic,
       priceWholesale,
     } = itemData;
 
     const formData = new FormData();
     formData.append('name', name);
-    formData.append('quantity', quantity ? quantity : 0);
     formData.append('description', description);
     formData.append('pricePublic', pricePublic);
     formData.append('priceWholesale', priceWholesale);
@@ -191,7 +189,7 @@ const Products = () => {
 
   const filteredData = useMemo(() => {
     const crit = search.toUpperCase();
-    console.log(products);
+
     return products
       .filter((d) => {
         return (

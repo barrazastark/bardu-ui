@@ -10,3 +10,5 @@ export { default as Alert } from './Alert';
 export { default as Select } from './Select';
 export { default as ImageSelector } from './ImageSelector';
 export { default as Loader } from './Loader';
+export { default as DatePicker } from './DatePicker';
+export { default as ProductSelector } from './ProductSelector';

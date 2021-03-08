@@ -6,7 +6,6 @@ const Form = ({ data, className, onChange, options }) => {
     description,
     image,
     category,
-    quantity,
     pricePublic,
     priceWholesale,
   } = data;
@@ -44,14 +43,6 @@ const Form = ({ data, className, onChange, options }) => {
         value={priceWholesale}
         name="priceWholesale"
         label="Precio al mayoreo *"
-        onChange={onChange}
-        type="number"
-      />
-
-      <Input
-        value={quantity}
-        name="quantity"
-        label="Cantidad"
         onChange={onChange}
         type="number"
       />

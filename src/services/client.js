@@ -16,7 +16,6 @@ client.interceptors.response.use(
     return config;
   },
   (error) => {
-    console.log(error, 'error');
     const isLoginPage = window.location.pathname.includes('login');
     const isGettingSession =
       error?.response?.config?.method === 'get' &&

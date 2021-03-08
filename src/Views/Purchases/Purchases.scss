@@ -1,0 +1,107 @@
+.inventory-wrapper {
+  .form {
+    display: grid;
+    grid-template-areas:
+      'name date nature concept'
+      'divider divider divider divider'
+      'productList productList productList productList';
+    margin-top: 20px;
+    grid-column-gap: 30px;
+    margin-bottom: 40px;
+
+    p {
+      font-weight: bold;
+      grid-area: productHeader;
+    }
+
+    svg {
+      font-size: 30px;
+      margin-top: 15px;
+      color: #0d6efd;
+      cursor: pointer;
+      &:active {
+        color: #0f3e85;
+      }
+    }
+    .divider {
+      display: flex;
+      width: 100%;
+      margin-top: 10px;
+      grid-area: divider;
+
+      .disabled-button svg {
+        color: gray;
+        pointer-events: none;
+      }
+
+      > * {
+        margin-right: 15px;
+        margin-bottom: 0;
+      }
+    }
+
+    .add-item {
+      svg {
+        margin-top: 34px;
+      }
+    }
+  }
+  &__product-list {
+    border-collapse: collapse;
+
+    tbody {
+      display: block;
+      width: 100%;
+    }
+
+    tbody {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+  }
+
+  &__last-row {
+    td {
+      box-sizing: border-box;
+      padding: 15px 0;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+  }
+
+  &__product-item {
+    td:first-child {
+      width: 320px;
+    }
+
+    td:nth-child(2),
+    td:nth-child(3) {
+      width: 205px;
+    }
+
+    td {
+      box-sizing: border-box;
+      border-bottom: 1px solid black;
+      padding: 15px 0;
+    }
+
+    td:last-child {
+      width: 50px;
+      text-align: right;
+    }
+
+    svg {
+      color: #0d6efd;
+      cursor: pointer;
+      font-size: 16px;
+      &:active {
+        color: #0f3e85;
+      }
+    }
+  }
+  &__save-button {
+    margin-top: 15px;
+  }
+}

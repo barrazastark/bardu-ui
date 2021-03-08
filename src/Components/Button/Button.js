@@ -8,8 +8,8 @@ const Button = ({ icon, children, type, onClick, className, disabled }) => {
 
   return (
     <button
-      disabled={disabled}
       className={`${blockName} ${blockName}__${type} ${className} ${_disabled}`}
+      disabled={disabled}
       onClick={onClick}
     >
       {Boolean(icon) && <Icon icon={icon} />}
