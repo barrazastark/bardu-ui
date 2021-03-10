@@ -1,14 +1,16 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
-import messageReducer from './reducer';
-import categoriesReducer from './categories/reducer';
-import productsReducer from './products/reducer';
+import message from './reducer';
+import categories from './categories/reducer';
+import products from './products/reducer';
+import purchases from './purchases/reducer';
 
 const rootReducer = combineReducers({
-  message: messageReducer,
-  categories: categoriesReducer,
-  products: productsReducer,
+  message,
+  categories,
+  products,
+  purchases,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

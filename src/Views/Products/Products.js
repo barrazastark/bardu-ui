@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { faPlusCircle, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { Input, Button, Drawer, Icon } from 'components';
@@ -7,6 +7,7 @@ import {
   addProduct,
   editProduct,
   deleteProduct,
+  getProducts,
 } from '../../redux/products/actions';
 import { numberToCurrency } from './utils';
 import './Products.scss';
@@ -47,6 +48,10 @@ const Products = () => {
     messageLoader,
     filters,
   } = state;
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
 
   const handleSearch = (e) => {
     setState((prevState) => ({ ...prevState, search: e.target.value }));
@@ -282,7 +287,7 @@ const Products = () => {
                   <span>Mayoreo: {numberToCurrency(item.priceWholesale)}</span>
                 </p>
                 <p>
-                  Disponibles: <span>{item.quantity || 0}</span>
+                  Disponibles: <span>{item.stocks}</span>
                 </p>
                 <p>{item.description}</p>
               </div>

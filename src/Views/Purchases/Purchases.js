@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { getToday, isValidForm, getTotal } from './utils';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import Form from './Form';
 import './Purchases.scss';
 import { Button, Icon } from 'components';
 import { numberToCurrency } from '../Products/utils';
+import { addPurchase } from '../../redux/purchases/actions';
 
 const blockName = 'inventory-wrapper';
 
@@ -22,12 +24,14 @@ const initialState = {
     name: '',
     createdAt: getToday(),
   },
+  loadingSave: false,
   invDetail: emptyDetail,
   invDetails: [],
   invDetailsSerial: 1,
 };
 
 const Inventory = () => {
+  const dispatch = useDispatch();
   const [state, setState] = useState(initialState);
 
   const { itemData, invDetail, invDetails } = state;
@@ -71,8 +75,10 @@ const Inventory = () => {
     }));
   };
 
-  const handleClickSave = () => {
-    console.log(invDetails, itemData);
+  const handleClickSave = async () => {
+    setState((prevState) => ({ ...prevState, loadingSave: true }));
+    await dispatch(addPurchase({ invDetails, itemData }));
+    setState((prevState) => ({ ...prevState, loadingSave: false }));
   };
 
   const isEnabledButton = isValidForm(itemData) && invDetails.length > 0;
