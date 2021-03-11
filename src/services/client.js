@@ -3,7 +3,8 @@ import store from '../redux/store';
 import { setMessage } from '../redux/actions';
 
 const client = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  //baseURL: 'http://localhost:5000/api',
+  baseURL: 'https://bardu-server.herokuapp.com/api',
 });
 
 client.interceptors.request.use((config) => {
