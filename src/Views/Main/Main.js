@@ -13,7 +13,7 @@ import './Main.scss';
 const Home = lazy(() => import('../Home'));
 const Categories = lazy(() => import('../Categories'));
 const Products = lazy(() => import('../Products'));
-const Purchases = lazy(() => import('../Purchases'));
+//const Purchases = lazy(() => import('../Purchases'));
 
 const blockName = 'main-wrapper';
 
