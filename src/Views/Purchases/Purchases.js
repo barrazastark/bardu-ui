@@ -1,12 +1,17 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { getToday, isValidForm, getTotal } from './utils';
+import { useState, useMemo, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getToday, isValidForm, getTotal, transformDate } from './utils';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import Form from './Form';
 import './Purchases.scss';
-import { Button, Icon } from 'components';
+import { Button, Icon, Table, Modal } from 'components';
 import { numberToCurrency } from '../Products/utils';
-import { addPurchase } from '../../redux/purchases/actions';
+import {
+  addPurchase,
+  getDetails,
+  updatePurchase,
+  deletePurchase,
+} from '../../redux/purchases/actions';
 
 const blockName = 'inventory-wrapper';
 
@@ -19,22 +24,55 @@ const emptyDetail = {
   quantity: '',
 };
 
+const emptyData = {
+  name: '',
+  createdAt: getToday(),
+};
+
 const initialState = {
-  itemData: {
-    name: '',
-    createdAt: getToday(),
-  },
+  itemData: emptyData,
   loadingSave: false,
   invDetail: emptyDetail,
   invDetails: [],
   invDetailsSerial: 1,
+  formVisible: false,
+  itemToDelete: null,
 };
+
+const headers = [
+  {
+    key: 'name',
+    display: 'Nombre de la compra',
+  },
+  {
+    key: 'displayedDate',
+    display: 'Fecha',
+  },
+];
 
 const Inventory = () => {
   const dispatch = useDispatch();
   const [state, setState] = useState(initialState);
+  const purchases = useSelector((state) => state.purchases.purchases);
+  const details = useSelector((state) => state.purchases.details);
 
-  const { itemData, invDetail, invDetails } = state;
+  const {
+    itemData,
+    invDetail,
+    invDetails,
+    formVisible,
+    loadingSave,
+    itemToDelete,
+  } = state;
+
+  useEffect(() => {
+    if (itemData._id) {
+      setState((prevState) => ({
+        ...prevState,
+        invDetails: details[itemData._id],
+      }));
+    }
+  }, [itemData._id, details]);
 
   const handleChange = ({ target: { name, value } }) => {
     setState((prevState) => ({
@@ -77,62 +115,161 @@ const Inventory = () => {
 
   const handleClickSave = async () => {
     setState((prevState) => ({ ...prevState, loadingSave: true }));
-    await dispatch(addPurchase({ invDetails, itemData }));
-    setState((prevState) => ({ ...prevState, loadingSave: false }));
+    if (itemData._id) {
+      await dispatch(updatePurchase({ invDetails, itemData }));
+      setState((prevState) => ({
+        ...prevState,
+        loadingSave: false,
+      }));
+    } else {
+      await dispatch(addPurchase({ invDetails, itemData }));
+      setState((prevState) => ({
+        ...prevState,
+        loadingSave: false,
+        formVisible: false,
+      }));
+    }
   };
 
-  const isEnabledButton = isValidForm(itemData) && invDetails.length > 0;
+  const handleClickEdit = async (item) => {
+    await dispatch(getDetails(item._id));
+
+    setState((prevState) => ({
+      ...prevState,
+      itemData: item,
+      invDetailsSerial: 1,
+      formVisible: true,
+    }));
+  };
+
+  const handleClickRemove = (itemToDelete) => {
+    setState((prevState) => ({ ...prevState, itemToDelete }));
+  };
+
+  const hideModal = () =>
+    setState((prevState) => ({ ...prevState, itemToDelete: null }));
+
+  const handleDeletePurchase = async () => {
+    setState((prevState) => ({ ...prevState, itemToDelete: null }));
+    await dispatch(deletePurchase(itemToDelete._id));
+  };
+
+  const isEnabledButton = useMemo(() => {
+    return isValidForm(itemData) && invDetails.length > 0 && !loadingSave;
+  }, [itemData, invDetails, loadingSave]);
+
+  const transformedData = useMemo(() => {
+    return purchases.map((purchase) => {
+      return { ...purchase, displayedDate: transformDate(purchase.createdAt) };
+    });
+  }, [purchases]);
 
   return (
     <div className={blockName}>
-      <h2>Compras</h2>
-      <div className={`${blockName}__inventory`}>
-        <Form
-          onChange={handleChange}
-          onChangeDetail={handleChangeDetail}
-          data={itemData}
-          detailData={invDetail}
-          onClickNewEntry={handleClickNewEntry}
-        />
-        {invDetails.length > 0 && (
-          <table className={`${blockName}__product-list`}>
-            <tbody>
-              {invDetails.map((detail) => (
-                <tr key={detail._id} className={`${blockName}__product-item`}>
-                  <td>{detail.product.name}</td>
-                  <td>{numberToCurrency(detail.cost)}</td>
-                  <td>{detail.quantity}</td>
-                  <td>{numberToCurrency(detail.cost * detail.quantity)}</td>
-                  <td>
-                    <Icon
-                      icon={faTimesCircle}
-                      onClick={() => handleClickDeleteEntry(detail._id)}
-                    />
-                  </td>
-                </tr>
-              ))}
-              <tr className={`${blockName}__last-row`}>
-                <td />
-                <td />
-                <td className="bold">Total</td>
-                <td className="bold">
-                  {numberToCurrency(getTotal(invDetails))}
-                </td>
-                <td />
-              </tr>
-            </tbody>
-          </table>
+      <h3>
+        Compras
+        {!formVisible && (
+          <Button
+            type="primary"
+            onClick={() =>
+              setState((prevState) => ({
+                ...prevState,
+                formVisible: true,
+                itemData: emptyData,
+                invDetails: [],
+                invDetail: emptyDetail,
+              }))
+            }
+          >
+            Registrar compra
+          </Button>
         )}
+      </h3>
+      {!formVisible && (
+        <Table
+          headers={headers}
+          data={transformedData}
+          onEdit={handleClickEdit}
+          onRemove={handleClickRemove}
+        />
+      )}
 
-        <Button
-          type="primary"
-          className={`${blockName}__save-button`}
-          disabled={!isEnabledButton}
-          onClick={handleClickSave}
-        >
-          Guardar
-        </Button>
-      </div>
+      {formVisible && (
+        <div className={`${blockName}__inventory`}>
+          <Form
+            onChange={handleChange}
+            onChangeDetail={handleChangeDetail}
+            data={itemData}
+            detailData={invDetail}
+            onClickNewEntry={handleClickNewEntry}
+          />
+          {invDetails.length > 0 && (
+            <table className={`${blockName}__product-list`}>
+              <tbody>
+                {invDetails.map((detail) => (
+                  <tr key={detail._id} className={`${blockName}__product-item`}>
+                    <td>{detail.product.name}</td>
+                    <td>{numberToCurrency(detail.cost)}</td>
+                    <td>{detail.quantity}</td>
+                    <td>{numberToCurrency(detail.cost * detail.quantity)}</td>
+                    <td>
+                      <Icon
+                        icon={faTimesCircle}
+                        onClick={() => handleClickDeleteEntry(detail._id)}
+                      />
+                    </td>
+                  </tr>
+                ))}
+                <tr className={`${blockName}__last-row`}>
+                  <td />
+                  <td />
+                  <td className="bold">Total</td>
+                  <td className="bold">
+                    {numberToCurrency(getTotal(invDetails))}
+                  </td>
+                  <td />
+                </tr>
+              </tbody>
+            </table>
+          )}
+
+          <Button
+            type="primary"
+            className={`${blockName}__save-button`}
+            disabled={!isEnabledButton}
+            onClick={handleClickSave}
+          >
+            {itemData._id ? 'Actualizar' : 'Guardar'}
+          </Button>
+          <Button
+            className={`${blockName}__cancel-button`}
+            onClick={() =>
+              setState((prevState) => ({
+                ...prevState,
+                formVisible: false,
+                itemData: emptyData,
+                invDetails: [],
+                invDetail: emptyDetail,
+              }))
+            }
+            disabled={loadingSave}
+          >
+            Cancelar
+          </Button>
+          {loadingSave && <span>Guardando...</span>}
+        </div>
+      )}
+      <Modal
+        isVisible={Boolean(itemToDelete)}
+        onCancel={hideModal}
+        onAccept={handleDeletePurchase}
+      >
+        <p>Estas seguro de borrar la compra ?</p>
+        <p>
+          Recuerda que es algo que no puede deshacerse y esto afectará al
+          inventario y las ganancias.
+        </p>
+      </Modal>
     </div>
   );
 };

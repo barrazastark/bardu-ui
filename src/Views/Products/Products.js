@@ -287,7 +287,7 @@ const Products = () => {
                   <span>Mayoreo: {numberToCurrency(item.priceWholesale)}</span>
                 </p>
                 <p>
-                  Disponibles: <span>{item.stocks}</span>
+                  Disponibles: <span>{item.stocks || 0}</span>
                 </p>
                 <p>{item.description}</p>
               </div>

@@ -7,10 +7,10 @@ import products from './products/reducer';
 import purchases from './purchases/reducer';
 
 const rootReducer = combineReducers({
+  purchases,
   message,
   categories,
   products,
-  purchases,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

@@ -109,6 +109,8 @@ Table.defaultProps = {
   withAction: true,
   isEditable: true,
   isRemove: true,
+  onEdit: () => {},
+  onRemove: () => {},
 };
 
 export default Table;

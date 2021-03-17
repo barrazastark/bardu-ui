@@ -16,6 +16,19 @@
     }
   }
 
+  &__is-on {
+    width: 10px;
+    height: 10px;
+    background-color: #00e359;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 10px;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 162, 63, 1);
+    margin-left: 10px;
+    animation: flash 2s infinite;
+  }
+
   &__signout {
     float: right;
     width: 50px;
@@ -23,5 +36,24 @@
     height: 50px;
     box-sizing: border-box;
     border-radius: 8px;
+  }
+
+  &__date {
+    float: right;
+    margin-right: 35px;
+    margin-top: 12px;
+    font-size: 14px;
+  }
+}
+
+@keyframes flash {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+  25%,
+  75% {
+    opacity: 0;
   }
 }

@@ -9,7 +9,7 @@ const DatePicker = ({ onChange, value, label, name, width }) => {
       <input
         id={name}
         type="date"
-        value={value}
+        value={value.slice(0, 10)}
         name={name}
         onChange={onChange}
       />

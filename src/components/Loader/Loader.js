@@ -2,9 +2,13 @@ import './Loader.scss';
 
 const blockName = 'loader-wrapper';
 
-const Loader = ({ message, size }) => {
+const Loader = ({ message, size, color }) => {
   return (
-    <div style={{ position: 'relative' }}>
+    <div
+      style={{
+        position: 'relative',
+      }}
+    >
       <div style={{ fontSize: size }} className={blockName} />
       <p
         style={{
