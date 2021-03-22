@@ -15,6 +15,7 @@ const Home = lazy(() => import('../Home'));
 const Categories = lazy(() => import('../Categories'));
 const Products = lazy(() => import('../Products'));
 const Purchases = lazy(() => import('../Purchases'));
+const Sales = lazy(() => import('../Sales'));
 
 const blockName = 'main-wrapper';
 
@@ -67,6 +68,7 @@ const Main = () => {
           <Route path={`${BASE_PATH}/compras`} component={Purchases} />
           <Route path={`${BASE_PATH}/categorias`} component={Categories} />
           <Route path={`${BASE_PATH}/productos`} component={Products} />
+          <Route path={`${BASE_PATH}/ventas`} component={Sales} />
         </Switch>
       </Suspense>
     </div>

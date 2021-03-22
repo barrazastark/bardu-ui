@@ -1,0 +1,138 @@
+.sales-wrapper {
+  h3 {
+    button {
+      margin-left: 15px;
+    }
+  }
+
+  &__form {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-column-gap: 30px;
+    grid-row-gap: 20px;
+
+    .detail {
+      min-height: 134px;
+      grid-row-start: 2;
+    }
+
+    .price {
+      grid-row-start: 2;
+      grid-column-start: 2;
+      grid-column-end: 4;
+
+      display: flex;
+      flex-direction: column;
+
+      > span {
+        font-weight: bold;
+        align-self: flex-start;
+        margin-bottom: 10px;
+      }
+
+      > label,
+      > input {
+        margin-bottom: 15px;
+      }
+
+      > label input[type='radio'] {
+        margin-right: 10px;
+      }
+
+      > label:last-of-type span {
+        margin-right: 10px;
+      }
+    }
+
+    .quantity {
+      grid-row-start: 2;
+      grid-column-start: 3;
+    }
+
+    svg.icon {
+      grid-row-start: 2;
+      font-size: 30px;
+      margin-left: 20px;
+      margin-top: 30px;
+      color: #0d6efd;
+      cursor: pointer;
+      &:active {
+        color: #0f3e85;
+      }
+    }
+    svg.disabled.icon {
+      color: gray;
+      pointer-events: none;
+      background-color: transparent;
+    }
+  }
+
+  &__list {
+    border-collapse: collapse;
+
+    tbody {
+      display: block;
+      width: 100%;
+    }
+
+    tbody {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+  }
+
+  &__item {
+    td:first-child {
+      width: 320px;
+      display: flex;
+      align-items: center;
+      img {
+        width: 50px;
+        border-radius: 12px;
+      }
+      span {
+        margin-left: 10px;
+      }
+    }
+
+    td:nth-child(2),
+    td:nth-child(3) {
+      width: 205px;
+    }
+
+    td {
+      box-sizing: border-box;
+      border-bottom: 1px solid black;
+      padding: 5px 0;
+    }
+
+    td:last-child {
+      width: 50px;
+      text-align: right;
+    }
+
+    svg {
+      color: #0d6efd;
+      cursor: pointer;
+      font-size: 16px;
+      &:active {
+        color: #0f3e85;
+      }
+    }
+  }
+  &__last-row {
+    td {
+      box-sizing: border-box;
+      padding: 15px 0;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+  }
+
+  &__cancel-button {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}

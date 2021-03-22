@@ -6,7 +6,14 @@ import './ProductSelector.scss';
 
 const blockName = 'product-selector';
 
-const ProductSelector = ({ products, onChange, value, name, label }) => {
+const ProductSelector = ({
+  products,
+  onChange,
+  value,
+  name,
+  label,
+  className,
+}) => {
   const input = useRef(null);
   const [search, setSearch] = useState('');
   const [hide, setHide] = useState(false);
@@ -54,7 +61,7 @@ const ProductSelector = ({ products, onChange, value, name, label }) => {
   }, [search, products]);
 
   return (
-    <div className={blockName}>
+    <div className={`${blockName} ${className}`}>
       <label>{label}</label>
       <input
         ref={input}
