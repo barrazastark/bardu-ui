@@ -164,6 +164,8 @@ const Inventory = () => {
     });
   }, [purchases]);
 
+  console.log(invDetails);
+
   return (
     <div className={blockName}>
       <h3>
@@ -208,7 +210,10 @@ const Inventory = () => {
               <tbody>
                 {invDetails.map((detail) => (
                   <tr key={detail._id} className={`${blockName}__product-item`}>
-                    <td>{detail.product.name}</td>
+                    <td>
+                      <img alt="Imagen" src={detail.product.image} />
+                      <span>{detail.product.name}</span>
+                    </td>
                     <td>{numberToCurrency(detail.cost)}</td>
                     <td>{detail.quantity}</td>
                     <td>{numberToCurrency(detail.cost * detail.quantity)}</td>

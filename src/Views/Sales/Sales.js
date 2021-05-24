@@ -165,7 +165,7 @@ const Sales = () => {
             {saleDetail.product && (
               <>
                 <label className="price">
-                  <span>Precio</span>
+                  <span>Precio *</span>
                   <label htmlFor="pricePublic">
                     <input
                       disabled={Boolean(saleDetail.otherPrice)}

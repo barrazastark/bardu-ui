@@ -6,8 +6,10 @@ const blockName = 'menu-card-wrapper';
 const MenuCard = ({ title, icon: Icon, path }) => {
   return (
     <Link to={path} className={blockName}>
-      <Icon />
-      <span>{title}</span>
+      <div className={`${blockName}__inner`}>
+        <Icon />
+        <span>{title}</span>
+      </div>
     </Link>
   );
 };
