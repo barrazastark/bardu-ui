@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Button,
   Table,
@@ -13,6 +13,7 @@ import './Sales.scss';
 import { numberToCurrency } from 'Views/Products/utils';
 import { getToday } from 'Views/Purchases/utils';
 import { isValidDetail, getTotal, isValidSale } from './utils';
+import { addSale } from '../../redux/sales/actions';
 
 const blockName = 'sales-wrapper';
 
@@ -42,6 +43,7 @@ const initialState = {
 };
 
 const Sales = () => {
+  const dispatch = useDispatch();
   const products = useSelector((state) =>
     state.products.products.filter((p) => p.stocks > 0),
   );
@@ -110,7 +112,10 @@ const Sales = () => {
   };
 
   const handleSave = async () => {
-    setState((prevState) => ({ ...prevState, loadingSave: true }));
+    //setState((prevState) => ({ ...prevState, loadingSave: true }));
+    await dispatch(
+      addSale({ sale: state.itemData, details: state.saleDetails }),
+    );
   };
 
   const validDetail = isValidDetail(saleDetail);
