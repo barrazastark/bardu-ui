@@ -17,7 +17,7 @@ export const isValidForm = (inventory) => {
 
 export const validDetail = (detail) => {
   const { cost, product, quantity } = detail;
-  const validCost = !isNaN(cost) && cost !== '' && cost >= 0;
+  const validCost = !isNaN(cost) && cost !== '';
   const validQuantity = !isNaN(quantity) && quantity !== '' && quantity > 0;
   if (!validQuantity || !validCost || !product) {
     return false;

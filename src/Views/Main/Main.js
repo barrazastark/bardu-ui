@@ -1,10 +1,19 @@
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect, Link, useHistory } from 'react-router-dom';
 import { useAuth } from 'hooks';
 import { Switch, Route } from 'react-router-dom';
-import { faSignOutAlt, faHome } from '@fortawesome/free-solid-svg-icons';
-import { Button, Icon } from 'components';
+import {
+  faSignOutAlt,
+  faHome,
+  faThList,
+  faGem,
+  faShoppingCart,
+  faMoneyCheckAlt,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { Button, Icon, MenuCard } from 'components';
 import { getCategories } from '../../redux/categories/actions';
 import { getProducts } from '../../redux/products/actions';
 import { getPurchases } from '../../redux/purchases/actions';
@@ -23,9 +32,19 @@ export const BASE_PATH = '/app';
 
 const initialDate = getDate(new Date());
 
+const GemIcon = () => <FontAwesomeIcon icon={faGem} />;
+const CategoryIcon = () => <FontAwesomeIcon icon={faThList} />;
+const PurchasesIcon = () => <FontAwesomeIcon icon={faShoppingCart} />;
+const SaleIcon = () => <FontAwesomeIcon icon={faMoneyCheckAlt} />;
+
 const Main = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const auth = useAuth();
+
+  const path = useMemo(() => {
+    return history.location.pathname;
+  }, [history.location.pathname]);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -50,7 +69,7 @@ const Main = () => {
       <h1>
         <Link to="/app">
           <Icon icon={faHome} />
-          Bienvendio
+          Bienvenido
         </Link>
         <span className={`${blockName}__is-on`} />
 
@@ -61,16 +80,44 @@ const Main = () => {
         />
         <span className={`${blockName}__date`}>{initialDate}</span>
       </h1>
+      <div className={`${blockName}__content`}>
+        <Suspense fallback={<p>Cargando</p>}>
+          <Switch>
+            <Route exact path={BASE_PATH} component={Home} />
+            <Route path={`${BASE_PATH}/compras`} component={Purchases} />
+            <Route path={`${BASE_PATH}/categorias`} component={Categories} />
+            <Route path={`${BASE_PATH}/productos`} component={Products} />
+            <Route path={`${BASE_PATH}/ventas`} component={Sales} />
+          </Switch>
+        </Suspense>
+      </div>
+      <div className={`${blockName}__menu-bar`}>
+        <MenuCard
+          title="VENTAS"
+          icon={SaleIcon}
+          path={`${BASE_PATH}/ventas`}
+          active={path.includes('ventas')}
+        />
 
-      <Suspense fallback={<p>Cargando</p>}>
-        <Switch>
-          <Route exact path={BASE_PATH} component={Home} />
-          <Route path={`${BASE_PATH}/compras`} component={Purchases} />
-          <Route path={`${BASE_PATH}/categorias`} component={Categories} />
-          <Route path={`${BASE_PATH}/productos`} component={Products} />
-          <Route path={`${BASE_PATH}/ventas`} component={Sales} />
-        </Switch>
-      </Suspense>
+        <MenuCard
+          title="COMPRAS"
+          icon={PurchasesIcon}
+          path={`${BASE_PATH}/compras`}
+          active={path.includes('compras')}
+        />
+        <MenuCard
+          title="PRODUCTOS"
+          icon={GemIcon}
+          path={`${BASE_PATH}/productos`}
+          active={path.includes('productos')}
+        />
+        <MenuCard
+          title="CATEGORIAS"
+          icon={CategoryIcon}
+          path={`${BASE_PATH}/categorias`}
+          active={path.includes('categorias')}
+        />
+      </div>
     </div>
   );
 };

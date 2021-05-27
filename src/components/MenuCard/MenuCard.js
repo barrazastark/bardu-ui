@@ -3,13 +3,13 @@ import './MenuCard.scss';
 
 const blockName = 'menu-card-wrapper';
 
-const MenuCard = ({ title, icon: Icon, path }) => {
+const MenuCard = ({ title, icon: Icon, path, active }) => {
   return (
-    <Link to={path} className={blockName}>
+    <Link to={path} className={`${blockName} ${active ? 'active' : ''} `}>
       <div className={`${blockName}__inner`}>
         <Icon />
-        <span>{title}</span>
       </div>
+      <span>{title}</span>
     </Link>
   );
 };

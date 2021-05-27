@@ -62,17 +62,20 @@ const Sales = () => {
 
   const handleClickProduct = (item) => {
     const { value } = item.target;
-    setState((prevState) => ({
-      ...prevState,
-      saleDetail: {
-        ...prevState.saleDetail,
-        product: value ? value._id : '',
-        productName: value ? value.name : '',
-        pricePublic: value ? value.pricePublic : '',
-        priceWholesale: value ? value.priceWholesale : '',
-        image: value ? value.image : '',
-      },
-    }));
+
+    if (value) {
+      setState((prevState) => ({
+        ...prevState,
+        saleDetail: {
+          ...prevState.saleDetail,
+          product: value._id,
+          productName: value.name,
+          pricePublic: value.pricePublic,
+          priceWholesale: value.priceWholesale,
+          image: value.image,
+        },
+      }));
+    }
   };
 
   const handleChangeDetail = (e) => {
@@ -160,7 +163,7 @@ const Sales = () => {
             />
 
             <ProductSelector
-              value={saleDetail.product}
+              value={saleDetail ? saleDetail.product : ''}
               onChange={handleClickProduct}
               products={products}
               name="product"
@@ -213,6 +216,7 @@ const Sales = () => {
                   name="quantity"
                   value={saleDetail.quantity}
                   className="quantity"
+                  type="number"
                 />
                 <Icon
                   onClick={handleAddDetail}

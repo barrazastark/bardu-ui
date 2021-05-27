@@ -17,6 +17,7 @@ const Table = ({
   isRemove,
   onEdit,
   onRemove,
+  noRemove,
 }) => {
   const handleRemoveItem = useCallback(
     (item) => {

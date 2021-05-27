@@ -1,15 +1,21 @@
 .menu-card-wrapper {
   border-radius: 6px;
   background-color: white;
-  padding: 32px;
+  padding: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  width: 120px;
-  height: 120px;
+  width: 15px;
+  height: 15px;
   border: 2px solid #e3e3e3;
-  border-radius: 1rem;
+  border-radius: 2rem;
+  margin: 0 10px;
+  position: relative;
+
+  &.active {
+    box-shadow: 0px 0px 5px 0px #192a4d;
+  }
 
   &:hover {
     box-shadow: 0px 0px 5px 0px #192a4d;
@@ -22,14 +28,22 @@
   }
 
   svg {
-    font-size: 50px;
+    font-size: 30px;
     color: #495057;
     display: block;
     margin-bottom: 10px;
   }
 
   span {
-    color: black;
+    color: #495057;
     display: block;
+    position: absolute;
+    bottom: -30px;
+    font-weight: 500;
+  }
+
+  &.active span {
+    color: black;
+    font-weight: 700;
   }
 }

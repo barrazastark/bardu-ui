@@ -11,7 +11,7 @@
   }
 
   &__products-content {
-    max-height: 700px;
+    height: calc(100vh - 347px);
   }
 
   &__products-list {
@@ -20,7 +20,7 @@
     box-sizing: border-box;
     width: calc(100% - 200px);
     padding: 10px;
-    height: 700px;
+    height: 100%;
     overflow-y: auto;
     text-align: left;
   }
@@ -31,7 +31,7 @@
     display: inline-block;
     vertical-align: top;
     flex-direction: column;
-    height: 700px;
+    height: 100%;
     overflow-y: auto;
     box-sizing: border-box;
     background-color: white;

@@ -164,8 +164,6 @@ const Inventory = () => {
     });
   }, [purchases]);
 
-  console.log(invDetails);
-
   return (
     <div className={blockName}>
       <h3>
@@ -193,6 +191,7 @@ const Inventory = () => {
           data={transformedData}
           onEdit={handleClickEdit}
           onRemove={handleClickRemove}
+          isRemove={false}
         />
       )}
 
@@ -211,8 +210,8 @@ const Inventory = () => {
                 {invDetails.map((detail) => (
                   <tr key={detail._id} className={`${blockName}__product-item`}>
                     <td>
-                      <img alt="Imagen" src={detail.product.image} />
-                      <span>{detail.product.name}</span>
+                      <img alt="Imagen" src={detail?.product?.image} />
+                      <span>{detail?.product?.name}</span>
                     </td>
                     <td>{numberToCurrency(detail.cost)}</td>
                     <td>{detail.quantity}</td>
