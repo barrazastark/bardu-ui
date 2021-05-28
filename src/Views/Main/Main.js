@@ -10,6 +10,7 @@ import {
   faGem,
   faShoppingCart,
   faMoneyCheckAlt,
+  faWarehouse,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -39,6 +40,9 @@ const PurchasesIcon = (props) => (
 );
 const SaleIcon = (props) => (
   <FontAwesomeIcon icon={faMoneyCheckAlt} {...props} />
+);
+const InventoryIcon = (props) => (
+  <FontAwesomeIcon icon={faWarehouse} {...props} />
 );
 
 const Main = () => {
@@ -131,8 +135,14 @@ const Main = () => {
           color="#118ab2"
           iconColor="white"
         />
-
-        {/* 073b4c */}
+        <MenuCard
+          title="INVENTARIO"
+          icon={InventoryIcon}
+          path={`${BASE_PATH}/inventario`}
+          active={path.includes('inventario')}
+          color="#073b4c"
+          iconColor="white"
+        />
       </div>
     </>
   );
