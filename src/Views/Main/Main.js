@@ -32,10 +32,14 @@ export const BASE_PATH = '/app';
 
 const initialDate = getDate(new Date());
 
-const GemIcon = () => <FontAwesomeIcon icon={faGem} />;
-const CategoryIcon = () => <FontAwesomeIcon icon={faThList} />;
-const PurchasesIcon = () => <FontAwesomeIcon icon={faShoppingCart} />;
-const SaleIcon = () => <FontAwesomeIcon icon={faMoneyCheckAlt} />;
+const GemIcon = (props) => <FontAwesomeIcon icon={faGem} {...props} />;
+const CategoryIcon = (props) => <FontAwesomeIcon icon={faThList} {...props} />;
+const PurchasesIcon = (props) => (
+  <FontAwesomeIcon icon={faShoppingCart} {...props} />
+);
+const SaleIcon = (props) => (
+  <FontAwesomeIcon icon={faMoneyCheckAlt} {...props} />
+);
 
 const Main = () => {
   const history = useHistory();
@@ -65,31 +69,33 @@ const Main = () => {
   }
 
   return (
-    <div className={blockName}>
-      <h1>
-        <Link to="/app">
-          <Icon icon={faHome} />
-          Bienvenido
-        </Link>
-        <span className={`${blockName}__is-on`} />
+    <>
+      <div className={blockName}>
+        <h1>
+          <Link to="/app">
+            <Icon icon={faHome} />
+            Bienvenido
+          </Link>
+          <span className={`${blockName}__is-on`} />
 
-        <Button
-          className={`${blockName}__signout`}
-          icon={faSignOutAlt}
-          onClick={handleSignOut}
-        />
-        <span className={`${blockName}__date`}>{initialDate}</span>
-      </h1>
-      <div className={`${blockName}__content`}>
-        <Suspense fallback={<p>Cargando</p>}>
-          <Switch>
-            <Route exact path={BASE_PATH} component={Home} />
-            <Route path={`${BASE_PATH}/compras`} component={Purchases} />
-            <Route path={`${BASE_PATH}/categorias`} component={Categories} />
-            <Route path={`${BASE_PATH}/productos`} component={Products} />
-            <Route path={`${BASE_PATH}/ventas`} component={Sales} />
-          </Switch>
-        </Suspense>
+          <Button
+            className={`${blockName}__signout`}
+            icon={faSignOutAlt}
+            onClick={handleSignOut}
+          />
+          <span className={`${blockName}__date`}>{initialDate}</span>
+        </h1>
+        <div className={`${blockName}__content`}>
+          <Suspense fallback={<p>Cargando</p>}>
+            <Switch>
+              <Route exact path={BASE_PATH} component={Home} />
+              <Route path={`${BASE_PATH}/compras`} component={Purchases} />
+              <Route path={`${BASE_PATH}/categorias`} component={Categories} />
+              <Route path={`${BASE_PATH}/productos`} component={Products} />
+              <Route path={`${BASE_PATH}/ventas`} component={Sales} />
+            </Switch>
+          </Suspense>
+        </div>
       </div>
       <div className={`${blockName}__menu-bar`}>
         <MenuCard
@@ -97,6 +103,8 @@ const Main = () => {
           icon={SaleIcon}
           path={`${BASE_PATH}/ventas`}
           active={path.includes('ventas')}
+          color="#ef476f"
+          iconColor="white"
         />
 
         <MenuCard
@@ -104,21 +112,29 @@ const Main = () => {
           icon={PurchasesIcon}
           path={`${BASE_PATH}/compras`}
           active={path.includes('compras')}
+          color="#ffd166"
+          iconColor="black"
         />
         <MenuCard
           title="PRODUCTOS"
           icon={GemIcon}
           path={`${BASE_PATH}/productos`}
           active={path.includes('productos')}
+          color="#06d6a0"
+          iconColor="white"
         />
         <MenuCard
           title="CATEGORIAS"
           icon={CategoryIcon}
           path={`${BASE_PATH}/categorias`}
           active={path.includes('categorias')}
+          color="#118ab2"
+          iconColor="white"
         />
+
+        {/* 073b4c */}
       </div>
-    </div>
+    </>
   );
 };
 
