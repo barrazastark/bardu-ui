@@ -50,7 +50,6 @@ const Sales = () => {
   const details = useSelector((state) => state.purchases.details);
 
   const products = useSelector((state) => {
-    console.log(state.products.products);
     return state.products.products.filter((p) => p.stocks > 0);
   });
 
@@ -184,7 +183,7 @@ const Sales = () => {
 
   const validDetail = isValidDetail(saleDetail);
   const validSale = isValidSale(itemData, saleDetails);
-  console.log(products);
+
   return (
     <div className={blockName}>
       <h3>
