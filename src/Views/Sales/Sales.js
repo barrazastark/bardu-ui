@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Button,
@@ -13,7 +13,8 @@ import './Sales.scss';
 import { numberToCurrency } from 'Views/Products/utils';
 import { getToday } from 'Views/Purchases/utils';
 import { isValidDetail, getTotal, isValidSale } from './utils';
-import { addSale } from '../../redux/sales/actions';
+import { addSale, getDetails, updateSale } from '../../redux/sales/actions';
+import { transformDate } from 'utils';
 
 const blockName = 'sales-wrapper';
 
@@ -44,12 +45,33 @@ const initialState = {
 
 const Sales = () => {
   const dispatch = useDispatch();
+  const sales = useSelector((state) => state.sales.sales);
+  const details = useSelector((state) => state.purchases.details);
+
   const products = useSelector((state) =>
     state.products.products.filter((p) => p.stocks > 0),
   );
   const [state, setState] = useState(initialState);
 
   const { formVisible, itemData, saleDetail, saleDetails, loadingSave } = state;
+
+  useEffect(() => {
+    if (itemData._id) {
+      setState((prevState) => ({
+        ...prevState,
+        saleDetails: details[itemData._id].map((d, index) => {
+          return {
+            ...d,
+            _id: index + 1,
+            image: d?.product?.image,
+            productName: d?.product?.name,
+            product: d?.product?._id,
+          };
+        }),
+        serial: details[itemData._id].length + 1,
+      }));
+    }
+  }, [itemData._id, details]);
 
   const handleChangeSale = (e) => {
     const name = e.target.name;
@@ -99,11 +121,11 @@ const Sales = () => {
     setState((prevState) => ({
       ...prevState,
       saleDetail: emptyDetail,
+      serial: prevState.serial + 1,
       saleDetails: [
         ...prevState.saleDetails,
-        { _id: prevState.serial, ...saleDetail },
+        { ...saleDetail, _id: prevState.serial },
       ],
-      serial: prevState.serial + 1,
     }));
   };
 
@@ -114,12 +136,44 @@ const Sales = () => {
     }));
   };
 
-  const handleSave = async () => {
-    //setState((prevState) => ({ ...prevState, loadingSave: true }));
-    await dispatch(
-      addSale({ sale: state.itemData, details: state.saleDetails }),
-    );
+  const handleClickEdit = async (item) => {
+    await dispatch(getDetails(item._id));
+
+    setState((prevState) => ({
+      ...prevState,
+      itemData: item,
+      serial: 1,
+      formVisible: true,
+    }));
   };
+
+  const handleSave = async () => {
+    setState((prevState) => ({ ...prevState, loadingSave: true }));
+    if (itemData._id) {
+      await dispatch(
+        updateSale({ sale: state.itemData, details: state.saleDetails }),
+      );
+      setState((prevState) => ({
+        ...prevState,
+        loadingSave: false,
+      }));
+    } else {
+      await dispatch(
+        addSale({ sale: state.itemData, details: state.saleDetails }),
+      );
+      setState((prevState) => ({
+        ...prevState,
+        loadingSave: false,
+        formVisible: false,
+      }));
+    }
+  };
+
+  const transformedData = useMemo(() => {
+    return sales.map((sale) => {
+      return { ...sale, displayedDate: transformDate(sale.createdAt) };
+    });
+  }, [sales]);
 
   const validDetail = isValidDetail(saleDetail);
   const validSale = isValidSale(itemData, saleDetails);
@@ -145,7 +199,13 @@ const Sales = () => {
           </Button>
         )}
       </h3>
-      {!formVisible && <Table headers={headers} data={[]} />}
+      {!formVisible && (
+        <Table
+          headers={headers}
+          data={transformedData}
+          onEdit={handleClickEdit}
+        />
+      )}
       {formVisible && (
         <>
           <div className={`${blockName}__form`}>
@@ -232,8 +292,10 @@ const Sales = () => {
                 {saleDetails.map((detail) => (
                   <tr key={detail._id} className={`${blockName}__item`}>
                     <td>
-                      <img src={detail.image} alt="Img" />
-                      <span>{detail.productName}</span>
+                      {detail.image && <img src={detail.image} alt="Imagen" />}
+                      <span>
+                        {detail.productName || 'Producto no encontrado'}
+                      </span>
                     </td>
                     <td>{numberToCurrency(detail.price)}</td>
                     <td>{detail.quantity}</td>

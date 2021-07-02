@@ -69,7 +69,11 @@ const Inventory = () => {
     if (itemData._id) {
       setState((prevState) => ({
         ...prevState,
-        invDetails: details[itemData._id],
+        invDetails: details[itemData._id].map((d, index) => ({
+          ...d,
+          _id: index + 1,
+        })),
+        invDetailsSerial: details[itemData._id].length + 1,
       }));
     }
   }, [itemData._id, details]);
@@ -210,8 +214,12 @@ const Inventory = () => {
                 {invDetails.map((detail) => (
                   <tr key={detail._id} className={`${blockName}__product-item`}>
                     <td>
-                      <img alt="Imagen" src={detail?.product?.image} />
-                      <span>{detail?.product?.name}</span>
+                      {detail?.product?.image && (
+                        <img alt="Imagen" src={detail?.product?.image} />
+                      )}
+                      <span>
+                        {detail?.product?.name || 'Producto no encontrado'}
+                      </span>
                     </td>
                     <td>{numberToCurrency(detail.cost)}</td>
                     <td>{detail.quantity}</td>

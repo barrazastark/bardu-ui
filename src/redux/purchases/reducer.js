@@ -14,7 +14,7 @@ const reducer = (state = initialState, action) => {
     case 'ADD_PURCHASE':
       return {
         ...state,
-        purchases: [...state.purchases, payload.inventory],
+        purchases: [payload.inventory, ...state.purchases],
         details: {
           ...state.details,
           [payload.inventory._id]: payload.details,

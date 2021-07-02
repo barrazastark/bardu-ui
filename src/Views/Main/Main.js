@@ -18,6 +18,8 @@ import { Button, Icon, MenuCard } from 'components';
 import { getCategories } from '../../redux/categories/actions';
 import { getProducts } from '../../redux/products/actions';
 import { getPurchases } from '../../redux/purchases/actions';
+import { getSales } from '../../redux/sales/actions';
+
 import './Main.scss';
 import { getDate } from './utils';
 
@@ -58,6 +60,7 @@ const Main = () => {
     dispatch(getProducts());
     dispatch(getCategories());
     dispatch(getPurchases());
+    dispatch(getSales());
   }, [dispatch]);
 
   const handleSignOut = () => {
