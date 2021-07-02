@@ -15,6 +15,7 @@ import { getToday } from 'Views/Purchases/utils';
 import { isValidDetail, getTotal, isValidSale } from './utils';
 import { addSale, getDetails, updateSale } from '../../redux/sales/actions';
 import { transformDate } from 'utils';
+import { getProducts } from 'redux/products/actions';
 
 const blockName = 'sales-wrapper';
 
@@ -48,12 +49,18 @@ const Sales = () => {
   const sales = useSelector((state) => state.sales.sales);
   const details = useSelector((state) => state.purchases.details);
 
-  const products = useSelector((state) =>
-    state.products.products.filter((p) => p.stocks > 0),
-  );
+  const products = useSelector((state) => {
+    console.log(state.products.products);
+    return state.products.products.filter((p) => p.stocks > 0);
+  });
+
   const [state, setState] = useState(initialState);
 
   const { formVisible, itemData, saleDetail, saleDetails, loadingSave } = state;
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
 
   useEffect(() => {
     if (itemData._id) {
@@ -177,7 +184,7 @@ const Sales = () => {
 
   const validDetail = isValidDetail(saleDetail);
   const validSale = isValidSale(itemData, saleDetails);
-
+  console.log(products);
   return (
     <div className={blockName}>
       <h3>

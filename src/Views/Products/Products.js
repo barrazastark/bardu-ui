@@ -166,6 +166,7 @@ const Products = () => {
         itemToDelete: null,
         isLoadingDrawer: false,
         drawerOpen: false,
+        itemData: initialState.itemData,
       }));
     } else {
       setState((prevState) => ({
