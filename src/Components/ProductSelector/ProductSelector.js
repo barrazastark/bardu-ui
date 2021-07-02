@@ -69,6 +69,7 @@ const ProductSelector = ({
         name={name}
         onChange={handleChange}
         value={search}
+        autoComplete="off"
         onClick={show}
       />
       {search && <Icon icon={faTimesCircle} onClick={clear} />}

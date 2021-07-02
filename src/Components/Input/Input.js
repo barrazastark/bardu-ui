@@ -20,6 +20,7 @@ const Input = ({
         value={type === 'number' && value === null ? 0 : value}
         placeholder={placeholder}
         onChange={onChange}
+        autoComplete="off"
       />
     </div>
   );
