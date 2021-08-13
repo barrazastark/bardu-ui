@@ -51,6 +51,7 @@ const Form = ({ data, className, onChange, options }) => {
         name="description"
         label="Descripcion"
         onChange={onChange}
+        type="textarea"
       />
     </div>
   );

@@ -14,14 +14,24 @@ const Input = ({
   return (
     <div className={`${blockName} ${className}`}>
       {label && <label>{label}</label>}
-      <input
-        name={name}
-        type={type}
-        value={type === 'number' && value === null ? 0 : value}
-        placeholder={placeholder}
-        onChange={onChange}
-        autoComplete="off"
-      />
+      {type === 'textarea' ? (
+        <textarea
+          name={name}
+          value={type === 'number' && value === null ? 0 : value}
+          placeholder={placeholder}
+          onChange={onChange}
+          autoComplete="off"
+        />
+      ) : (
+        <input
+          name={name}
+          type={type}
+          value={type === 'number' && value === null ? 0 : value}
+          placeholder={placeholder}
+          onChange={onChange}
+          autoComplete="off"
+        />
+      )}
     </div>
   );
 };
